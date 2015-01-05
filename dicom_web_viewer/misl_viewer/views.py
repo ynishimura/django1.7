@@ -9,6 +9,9 @@ from misl_viewer.models import Upload
 #system cmd#
 import os
 
+class testUploadFileForm(Form):
+    file = FileField()
+
 def test(request):
 
     msg=''
@@ -18,8 +21,21 @@ def test(request):
     pngdir = '/root/webapp/django/dicom_viewer/dicom_web_viewer/static/png/'
     #-- upload method --#
     if request.method == 'POST':
-        form = UploadFileForm(request.POST,request.FILES)
+        form = testUploadFileForm(request.POST,request.FILES)
         print form
+        
+        print request.FILES.getlist('upload[]')
+        print request.POST
+        print request.POST.getlist('upload[]')
+        for f in request.FILES.getlist('upload[]'):
+            print f
+            updir = r'/root/webapp/django/dicom_viewer/dicom_web_viewer/static/file/' + str(f)
+            destination = open(updir,'wb+')
+            upfile = request.FILES['upload[]']
+            for chunk in upfile.chunks():
+                destination.write(chunk)
+            destination.close()
+
         if form.is_valid():
             print form.cleaned_data
             #
@@ -39,7 +55,7 @@ def test(request):
             # os.system(cmd2)
 
     else:
-        form = UploadFileForm()
+        form = testUploadFileForm()
 
     #return HttpResponse(u'test')
     return render_to_response('misl_viewer/test.html',  # 使用するテンプレート

@@ -153,11 +153,10 @@ Path: <input type="file" id="imagefiles" multiple />
 <!-- History -->
 <div id="history" title="upload">
 
+<!-- **********uplaod************ -->	
 <form enctype="multipart/form-data" action='/viewer/test/' method='POST'>{% csrf_token %}
-    <table>
-	    {{form}}
-	</table>
-  <input type='file' name="upload[]" multiple="multiple">
+	<!-- multi -->
+	<input type='file' name="upload[]" multiple="multiple">
 	<input type='submit' value=" UPLOAD ">
 </form>
 </div>
