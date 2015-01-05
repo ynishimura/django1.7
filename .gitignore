@@ -1,0 +1,3 @@
+*.pyc
+/root/webapp/django/dicom_viewer/dicom_web_viewer/static/file/
+
