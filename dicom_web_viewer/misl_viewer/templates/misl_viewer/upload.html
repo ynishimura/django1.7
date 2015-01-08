@@ -1,3 +1,4 @@
+{% load bootstrap %}
 <!DOCTYPE>
 <html lang="ja">
 
@@ -145,7 +146,7 @@ Path: <input type="file" id="imagefiles" multiple />
 </p></form>
 </div>
 
-<!-- Toolbox -->
+<!-- Toolbox --><div id="toolbox" title="Toolbox" style="display:none">>
 <div id="toolbox" title="Toolbox">
 <ul id="toolList"></ul>
 </div>
@@ -153,13 +154,23 @@ Path: <input type="file" id="imagefiles" multiple />
 <!-- History -->
 <div id="history" title="upload">
 
+<!-- upload -->
 <form enctype="multipart/form-data" action='/viewer/' method='POST'>{% csrf_token %}
-    <table>
-	    {{form}}
-	</table>
+	<input type='file' name="upload[]" multiple="multiple">
 	<input type='submit' value=" UPLOAD ">
 </form>
 </div>
+
+<hr />
+
+<form class="form-horizontal" role="form">
+	{{ form|bootstrap_horizontal }}
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<input type="button" class="btn btn-primary" value="Submit" />
+		</div>
+	</div>
+</form>
 
 <!-- Tags -->
 <div id="tags" title="Tags" style="display:none;"></div>

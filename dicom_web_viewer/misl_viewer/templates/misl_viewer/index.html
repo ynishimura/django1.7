@@ -128,7 +128,7 @@ $(document).ready(function(){
 <button ><a href="{% url 'misl_viewer:list' %}">Gellery</a></button>
 <button onclick="toggle('#openData')">File</button>
 <button onclick="toggle('#toolbox')">Toolbox</button>
-<button onclick="toggle('#history')">Upload</button>
+<button ><a href="{% url 'misl_viewer:upload' %}">Upload</button>
 <button onclick="toggle('#tags')">Tags</button>
 <button onclick="toggle('#layerDialog')">Image</button>
 <button onclick="app.toggleInfoLayerDisplay()">Info</button>
@@ -152,11 +152,9 @@ Path: <input type="file" id="imagefiles" multiple />
 
 <!-- History -->
 <div id="history" title="upload">
-
+<!-- Upload -->
 <form enctype="multipart/form-data" action='/viewer/' method='POST'>{% csrf_token %}
-    <table>
-	    {{form}}
-	</table>
+	<input type='file' name="upload[]" multiple="multiple">
 	<input type='submit' value=" UPLOAD ">
 </form>
 </div>
