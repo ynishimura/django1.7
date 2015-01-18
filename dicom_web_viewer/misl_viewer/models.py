@@ -1,7 +1,10 @@
+#-*- coding: utf-8 -*-
 from django.db import models
 
-class Upload(models.Model):
+class Image(models.Model):
     file_name = models.CharField(max_length = 255)
-    upload_date = models.DateTimeField('date upload')
+    set_proc = models.CharField(max_length=255,blank=True, default='DEFAULT_PROC')
+    set_tag = models.CharField(max_length=255,blank=True,default='DEFAULT_TAG')
+#    upload_date = models.DateTimeField('date upload')
     def __unicode__(self):
-        return self.name
+        return self.file_name

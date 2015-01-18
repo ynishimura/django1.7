@@ -15,12 +15,12 @@ body { font-size: 80%; }
 #infotl { color: #f41c1c; text-shadow: 0 1px 0 #fff; }
 #infotr { color: #333; text-shadow: 0 1px 0 #fff; }
 </style>
-// <script>
-//
-// /*alert("Hippocampus of this patient might have atrophied！");
-// */
-// alert("この患者はアルツハイマー型認知症の可能性があります。海馬の萎縮が検出されました。");
-// </script>
+<script>
+/*
+ alert("Hippocampus of this patient might have atrophied！");
+ alert("この患者はアルツハイマー型認知症の可能性があります。海馬の萎縮が検出されました。");
+*/
+</script>
 
 <link rel="stylesheet" href="{% static "ext/jquery/ui/1.10.2/themes/ui-darkness/jquery-ui-1.10.2.min.css" %}">
 <!-- Third party -->
@@ -65,14 +65,14 @@ body { font-size: 80%; }
 
 function toggle(dialogId)
 {
-    if( $(dialogId).dialog('isOpen') )
-    {
-        $(dialogId).dialog('close');
-    }
-    else
-    {
-        $(dialogId).dialog('open');
-    }
+	if( $(dialogId).dialog('isOpen') )
+	{
+		$(dialogId).dialog('close');
+	}
+	else
+	{
+		$(dialogId).dialog('open');
+	}
 }
 
 // main application
@@ -117,65 +117,65 @@ $(document).ready(function(){
 </head>
 
 
+
 <body>
 
-<div id="pageHeader">
-
-<!-- Title -->
-<img src="{% static "mislviewer.png" %}">
-<!-- Toolbar -->
-<div id="toolbar">
-<button ><a href="{% url 'misl_viewer:list' %}">Gellery</a></button>
-<button onclick="toggle('#openData')">File</button>
-<button onclick="toggle('#toolbox')">Toolbox</button>
-<button ><a href="{% url 'misl_viewer:upload' %}">Upload</button>
-<button onclick="toggle('#tags')">Tags</button>
-<button onclick="toggle('#layerDialog')">Image</button>
-<button onclick="app.toggleInfoLayerDisplay()">Info</button>
-</div><!-- /toolbar -->
-
-</div><!-- /pageHeader -->
+	<div id="pageHeader">
+		<!-- Title -->
+		<img src="{% static "mislviewer.png" %}">
+		<!-- Toolbar -->
+		<div id="toolbar">
+			<button ><a href="{% url 'misl_viewer:index' %}">Viewer</a></button>
+			<button ><a href="{% url 'misl_viewer:list' %}">Gellery</a></button>
+			<button onclick="toggle('#openData')">File</button>
+			<button onclick="toggle('#toolbox')">Toolbox</button>
+			<button ><a href="{% url 'misl_viewer:upload' %}">Upload</a></button>
+			<button onclick="toggle('#tags')">Tags</button>
+			<button onclick="toggle('#layerDialog')">Image</button>
+			<button onclick="app.toggleInfoLayerDisplay()">Info</button>
+		</div><!-- /toolbar -->
+	</div><!-- /pageHeader -->
 
 <div id="pageMain">
 
-<!-- Open file -->
-<div id="openData" title="File">
-<form><p>
-Path: <input type="file" id="imagefiles" multiple />
-</p></form>
-</div>
+	<!-- Open file -->
+	<div id="openData" title="File">
+		<form><p>
+			Path: <input type="file" id="imagefiles" multiple />
+			</p></form>
+	</div>
 
-<!-- Toolbox -->
-<div id="toolbox" title="Toolbox">
-<ul id="toolList"></ul>
-</div>
+	<!-- Toolbox -->
+	<div id="toolbox" title="Toolbox">
+		<ul id="toolList"></ul>
+	</div>
 
-<!-- History -->
-<div id="history" title="upload">
-<!-- Upload -->
-<form enctype="multipart/form-data" action='/viewer/' method='POST'>{% csrf_token %}
-	<input type='file' name="upload[]" multiple="multiple">
-	<input type='submit' value=" UPLOAD ">
-</form>
-</div>
+	<!-- History -->
+	<div id="history" title="upload">
+		<!-- Upload -->
+		<form enctype="multipart/form-data" action='/viewer/' method='POST'>{% csrf_token %}
+			<input type='file' name="upload[]" multiple="multiple">
+			<input type='submit' value=" UPLOAD ">
+		</form>
+	</div>
 
-<!-- Tags -->
-<div id="tags" title="Tags" style="display:none;"></div>
+	<!-- Tags -->
+	<div id="tags" title="Tags" style="display:none;"></div>
 
-<!-- Layer Container -->
-<div id="layerDialog" title="Image">
-<div id="layerContainer">
-<canvas id="imageLayer">Only for HTML5 compatible browsers...</canvas>
-<canvas id="drawLayer">Only for HTML5 compatible browsers...</canvas>
-<canvas id="tempLayer">Only for HTML5 compatible browsers...</canvas>
-<div id="infoLayer">
-<div id="infotl"></div>
-<div id="infotr"></div>
-<div id="infobl"></div>
-<div id="infobr"><div id="plot"></div></div>
-</div><!-- /infoLayer -->
-</div><!-- /layerContainer -->
-</div><!-- /layerDialog -->
+	<!-- Layer Container -->
+	<div id="layerDialog" title="Image">
+		<div id="layerContainer">
+			<canvas id="imageLayer">Only for HTML5 compatible browsers...</canvas>
+			<canvas id="drawLayer">Only for HTML5 compatible browsers...</canvas>
+			<canvas id="tempLayer">Only for HTML5 compatible browsers...</canvas>
+			<div id="infoLayer">
+				<div id="infotl"></div>
+				<div id="infotr"></div>
+				<div id="infobl"></div>
+				<div id="infobr"><div id="plot"></div></div>
+			</div><!-- /infoLayer -->
+		</div><!-- /layerContainer -->
+	</div><!-- /layerDialog -->
 
 </div><!-- /pageMain -->
 

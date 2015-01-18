@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block extrahead %}
+<style>
+</style>
+{% endblock %}
+{% block content %}
+<div id="pageMain">
+
+	<!-- Open file -->
+	<div id="openData" title="File">
+		<form><p>
+			Path: <input type="file" id="imagefiles" multiple />
+			</p></form>
+	</div>
+
+	<!-- Toolbox -->
+	<div id="toolbox" title="Toolbox">
+		<ul id="toolList"></ul>
+	</div>
+
+	<!-- History -->
+	<div id="history" title="upload">
+		<!-- Upload -->
+		<form enctype="multipart/form-data" action='/viewer/' method='POST'>{% csrf_token %}
+			<input type='file' name="upload[]" multiple="multiple">
+			<input type='submit' value=" UPLOAD ">
+		</form>
+	</div>
+
+	<!-- Tags -->
+	<div id="tags" title="Tags" style="display:none;"></div>
+
+	<!-- Layer Container -->
+	<div id="layerDialog" title="Image">
+		<div id="layerContainer">
+			<canvas id="imageLayer">Only for HTML5 compatible browsers...</canvas>
+			<canvas id="drawLayer">Only for HTML5 compatible browsers...</canvas>
+			<canvas id="tempLayer">Only for HTML5 compatible browsers...</canvas>
+			<div id="infoLayer">
+				<div id="infotl"></div>
+				<div id="infotr"></div>
+				<div id="infobl"></div>
+				<div id="infobr"><div id="plot"></div></div>
+			</div><!-- /infoLayer -->
+		</div><!-- /layerContainer -->
+	</div><!-- /layerDialog -->
+</div><!-- /pageMain -->
+{% endblock content %}
