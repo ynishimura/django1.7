@@ -16,36 +16,36 @@ dwv.App = function(mobile)
     var dataWidth = 0;
     var dataHeight = 0;
     var displayZoom = 1;
-     
+
     // Image layer
     var imageLayer = null;
     // Draw layer
     var drawLayer = null;
     // Temporary layer
     var tempLayer = null;
-    
+
     // flag to know if the info layer is listening on the image.
     var isInfoLayerListening = true;
-    
+
     // Tool box
     var toolBox = new dwv.tool.ToolBox(this);
     // UndoStack
     var undoStack = new dwv.tool.UndoStack(this);
-    
+
     // Public Methods
     // --------------
-    
+
     // Get the image
     this.getImage = function() { return image; };
     this.getView = function() { return view; };
-    
+
     // Set the image
-    this.setImage = function(img) { 
+    this.setImage = function(img) {
     	image = img;
         view.setImage(img);
-    	};    
-    this.restoreOriginalImage = function() { image = originalImage; }; 
-    
+    	};
+    this.restoreOriginalImage = function() { image = originalImage; };
+
     // Get the image data array
     this.getImageData = function() { return imageData; };
 
@@ -71,12 +71,12 @@ dwv.App = function(mobile)
         document.getElementById('imagefiles').addEventListener('change', this.onChangeFiles, false);
         document.getElementById('imageurl').addEventListener('change', this.onChangeURL, false);
     };
-    
+
     /**
      * Handle key event.
      * - CRTL-Z: undo
      * - CRTL-Y: redo
-     * Default behavior. Usually used in tools. 
+     * Default behavior. Usually used in tools.
      * @param event
      */
     this.handleKeyDown = function(event)
@@ -90,19 +90,20 @@ dwv.App = function(mobile)
             self.getUndoStack().redo();
         }
     };
-    
+
     /**
      * @public
      */
     this.onChangeFiles = function(evt)
     {
-        self.loadFiles(evt.target.files);
+      //self.loadFiles(evt.target.files);
+      self.loadFiles(evt.target.files);
     };
 
     /**
      * @public
      */
-    this.loadFiles = function(files) 
+    this.loadFiles = function(files)
     {
         //TODO: for (var i = 0; i < files.length; ++i) {
         if( files[0].type.match("image.*") )
@@ -110,7 +111,8 @@ dwv.App = function(mobile)
             var reader = new FileReader();
             reader.onload = function(event){
                 var image = new Image();
-                image.src = event.target.result;
+                image.src = "http://172.22.54.166:8000/static/mislviewer.png";
+                //image.src = event.target.result;
                 image.onload = function(e){
                     try {
                         // parse image file
@@ -135,8 +137,8 @@ dwv.App = function(mobile)
     		reader.onload = function(event){
     			try {
         		    // parse DICOM file
-        			var data = dwv.image.getDataFromDicomBuffer(event.target.result);
-        			// prepare display
+                var data = dwv.image.getDataFromDicomBuffer(event.target.result);
+                // prepare display
         			postLoadInit(data);
     			} catch(error) {
                     handleError(error);
@@ -150,24 +152,26 @@ dwv.App = function(mobile)
     		reader.readAsArrayBuffer(files[0]);
         }
     };
-        
+
     /**
      * @public
      */
     this.onChangeURL = function(evt)
     {
-        self.loadURL(evt.target.value);
+      self.loadURL(evt.target.value);
+      //self.loadURL(evt.target.value);
     };
 
     /**
      * @public
      */
-    this.loadURL = function(url) 
+    this.loadURL = function(url)
     {
+      console.log("hoge")
         var request = new XMLHttpRequest();
         // TODO Verify URL...
-        request.open('GET', url, true);
-        request.responseType = "arraybuffer"; 
+        request.open('GET',url, true);
+        request.responseType = "arraybuffer";
         request.onload = function(ev) {
             var view = new DataView(request.response);
             var isJpeg = view.getUint32(0) === 0xffd8ffe0;
@@ -187,7 +191,7 @@ dwv.App = function(mobile)
                 else if (isPng) imgStr = "png";
                 else if (isGif) imgStr = "gif";
                 image.src = "data:image/" + imgStr + ";base64," + window.btoa(binary);
-                
+
                 image.onload = function(e){
         			try {
 	                    // parse image data
@@ -218,20 +222,20 @@ dwv.App = function(mobile)
         request.onprogress = dwv.gui.updateProgress;
         request.send(null);
     };
-    
+
     /**
      * Generate the image data and draw it.
      */
     this.generateAndDrawImage = function()
-    {         
+    {
     	// generate image data from DICOM
-        self.getView().generateImageData(imageData);         
+        self.getView().generateImageData(imageData);
         // set the image data of the layer
         self.getImageLayer().setImageData(imageData);
         // draw the image
         self.getImageLayer().draw();
     };
-    
+
     /**
      * To be called once the image is loaded.
      */
@@ -252,7 +256,7 @@ dwv.App = function(mobile)
         $("#layerContainer").width(displayZoom*dataWidth);
         $("#layerContainer").height(displayZoom*dataHeight);
     };
-    
+
     /**
      * To be called once the image is loaded.
      */
@@ -261,7 +265,7 @@ dwv.App = function(mobile)
         if( imageLayer ) imageLayer.zoom(zoomX,zoomY,cx,cy);
         if( drawLayer ) drawLayer.zoom(zoomX,zoomY,cx,cy);
     };
-    
+
     /**
      * Toggle the display of the info layer.
      */
@@ -285,13 +289,13 @@ dwv.App = function(mobile)
             isInfoLayerListening = true;
         }
     };
-    
+
     // Private Methods
     // ---------------
 
     /**
      * @private
-     * The general-purpose event handler. This function just determines the mouse 
+     * The general-purpose event handler. This function just determines the mouse
      * position relative to the canvas element.
      */
     function eventHandler(event)
@@ -338,7 +342,7 @@ dwv.App = function(mobile)
                 || event.type === "mouseup"
                 || event.type === "mouseout"
                 || event.type === "mousewheel"
-                || event.type === "dblclick" 
+                || event.type === "dblclick"
                 || event.type === "DOMMouseScroll" )
             {
                 // layerX is for firefox
@@ -351,7 +355,7 @@ dwv.App = function(mobile)
             }
             else if( event.type === "keydown" ) handled = true;
         }
-            
+
         // Call the event handler of the tool.
         if( handled )
         {
@@ -362,7 +366,7 @@ dwv.App = function(mobile)
             }
         }
     }
-    
+
     /**
      * @private
      * */
@@ -372,7 +376,7 @@ dwv.App = function(mobile)
         else alert("Error: "+error+".");
         if( error.stack ) console.log(error.stack);
     }
-    
+
     /**
      * @private
      * @param dataWidth The width of the input data.
@@ -382,7 +386,7 @@ dwv.App = function(mobile)
     {
         // resize app
         self.resize();
-        
+
         // image layer
         imageLayer = new dwv.html.Layer("imageLayer");
         imageLayer.initialise(dataWidth, dataHeight);
@@ -397,7 +401,7 @@ dwv.App = function(mobile)
         tempLayer.initialise(dataWidth, dataHeight);
         tempLayer.setStyleDisplay(true);
     }
-    
+
     /**
      * @private
      * Create the DICOM tags table.
@@ -411,7 +415,7 @@ dwv.App = function(mobile)
         // HTML node
         var node = document.getElementById("tags");
         // remove possible previous
-        while (node.hasChildNodes()) { 
+        while (node.hasChildNodes()) {
             node.removeChild(node.firstChild);
         }
         // tags HTML table
@@ -425,7 +429,7 @@ dwv.App = function(mobile)
         // tags table
         node.appendChild(table);
     }
-    
+
     /**
      * @private
      * To be called once the DICOM has been parsed.
@@ -436,23 +440,23 @@ dwv.App = function(mobile)
         createTagsTable(data.info);
 
         view = data.view;
-        
+
         // store image
         originalImage = view.getImage();
         image = originalImage;
-        
+
         // layout
         dataWidth = image.getSize().getNumberOfColumns();
         dataHeight = image.getSize().getNumberOfRows();
         createLayers(dataWidth, dataHeight);
-        
+
         // info layer
         dwv.info.createWindowingValue();
         dwv.info.createMiniColorMap();
         dwv.info.createPlot();
 
         // get the image data from the image layer
-        imageData = self.getImageLayer().getContext().createImageData( 
+        imageData = self.getImageLayer().getContext().createImageData(
                 dataWidth, dataHeight);
 
         // mouse listeners
@@ -474,13 +478,13 @@ dwv.App = function(mobile)
         view.addEventListener("wlchange", dwv.info.updateMiniColorMap);
         view.addEventListener("wlchange", dwv.info.updatePlotMarkings);
         view.addEventListener("colorchange", dwv.info.updateMiniColorMap);
-        
+
         // initialise the toolbox
         // note: the window/level tool is responsible for doing the first display.
         toolBox.enable(true);
-        // add the HTML for the history 
+        // add the HTML for the history
         dwv.gui.appendUndoHtml();
 
     }
-    
+
 };

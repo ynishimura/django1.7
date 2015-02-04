@@ -59,12 +59,25 @@ class UploadFileForm(Form):
 
 def list(request):
     '''画像一覧'''
-#    return HttpResponse(u'一覧')
     images = Image.objects.all()
     print Image.objects.all().order_by('id')
     return render_to_response('misl_viewer/list.html',  # 使用するテンプレート
                               {'images': images},       # テンプレートに渡すデータ
                               context_instance=RequestContext(request))  # その他標準のコンテキスト
+
+def display(request, image_id):
+    '''選択画像表示'''
+    image_display = get_object_or_404(Image, pk=image_id)
+    return render_to_response('misl_viewer/display.html',  # 使用するテンプレート
+                              {'images': image_display},       # テンプレートに渡すデータ
+                              context_instance=RequestContext(request))  # その他標準のコンテキスト
+
+
+def Image_del(request,image_id):
+    '''画像の削除'''
+    image = get_object_or_404(Image, pk=image_id)
+    image.delete()
+    return redirect('misl_viewer:list')
 
 def Upload(request):
     '''アップロードページ'''
@@ -73,17 +86,20 @@ def Upload(request):
     return render_to_response('misl_viewer/upload.html',
             {'form':form},
             context_instance=RequestContext(request))
+
 def MultiFileUpload(request):
     '''複数ファイルアップロード'''
     filedir = r'/root/webapp/django/dicom_viewer/dicom_web_viewer/static/file/'
     if request.method == 'POST':
-        print request.POST
-        print request.FILES
+#        print request.POST['select_processing']
+ #       print request.POST['set_threshold']
+#        print request.FILES
         for f in request.FILES.getlist('upload[]'):
             print f
             updir = filedir + str(f)
             #db save
             i = Image(file_name= str(f))
+            #i = Image(file_name= str(f),set_proc= request.POST['select_processing'],set_threshold=request.POST['set_threshold'])
             i.save()
             #
             destination = open(updir,'wb+')
@@ -91,4 +107,6 @@ def MultiFileUpload(request):
             for chunk in upfile.chunks():
                 destination.write(chunk)
             destination.close()
+        os.system("ssh debian python /root/dicom_image/dicom_addtag.py")
         os.system("ssh debian python /root/dicom_image/dicom_convert.py")
+    return redirect('/viewer/list')

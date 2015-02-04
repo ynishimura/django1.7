@@ -9,26 +9,18 @@
 </style>
 {% endblock %}
 {% block content %}
-<div id="pageMain">
-	<div class="container">
-		<div class="row">
-			<div class="span12">
 				<h1>DICOM Images Upload</h1>
 				<hr \>
 				<!-- upload -->
-				<form enctype="multipart/form-data" class="form" role="form" action='/viewer/'method='POST'>{% csrf_token %}
+				<form enctype="multipart/form-data" class="form" role="form" action='/viewer/add/'method='POST'>{% csrf_token %}
 					<p><b>アップロードするファイルを選択してください</b></p>
 					<input type='file' name="upload[]" multiple="multiple" required>
 					<br>
-					{{ form|bootstrap }}
+					{{ form|bootstrap}}
 					<div class="form-group">
 						<div>
 							<input type="submit" class="btn btn-primary" value="Submit" />
 						</div>
 					</div>
 				</form>
-			</div><!-- /span12 -->
-		</div><!-- /row -->
-	</div><!-- /container -->
-</div><!-- /pageMain -->
 {% endblock content %}

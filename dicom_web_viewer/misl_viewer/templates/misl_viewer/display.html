@@ -18,8 +18,8 @@ body { font-size: 80%; }
 <script>
 /*
  alert("Hippocampus of this patient might have atrophied！");
+ alert("この患者はアルツハイマー型認知症の可能性があります。海馬の萎縮が検出されました。");
 */
- alert("患者Aは前頭側頭型認知症の可能性があります。前頭葉の萎縮が検出されました。");
 </script>
 
 <link rel="stylesheet" href="{% static "ext/jquery/ui/1.10.2/themes/ui-darkness/jquery-ui-1.10.2.min.css" %}">
@@ -86,19 +86,21 @@ $(document).ready(function(){
         { primary: "ui-icon-comment" }, text: false });
     // create dialogs
     $("#openData").dialog({ position:
-        {my: "left top+100", at: "left top", of: "#pageMain"} });
+		{my: "left top+100", at: "left top", of: "#pageMain"},
+				autoOpen:false });
     $("#toolbox").dialog({ position:
-        {my: "left top+255", at: "left top", of: "#pageMain"} });
+		{my: "left top+255", at: "left top", of: "#pageMain"},
+				autoOpen:false });
     $("#history").dialog({ position:
         {my: "left top+410", at: "left top", of: "#pageMain"},
-        autoOpen: true });
+        autoOpen: false });
     $("#tags").dialog({ position:
         {my: "right top", at: "right top", of: "#pageMain"},
-        autoOpen: false, width: 500, height: 590 });
+        autoOpen: true, width: 600, height: 590 });
 
     // image dialog
     $("#layerDialog").dialog({ position:
-        {my: "left+320 top+100", at: "left top", of: "#pageMain"}});
+        {my: "left top+100", at: "left top", of: "#pageMain"}});
     // default size
     $("#layerDialog").dialog({ width: "auto", resizable: false });
     // Resizable but keep aspect ratio
@@ -112,7 +114,7 @@ $(document).ready(function(){
     // possible load from URL
     // var input = dwv.html.getUriParam("http://172.22.54.166:8000{% static "mislviewer.png" %}");
     // if( input ) app.loadURL(decodeURIComponent(input));
-    //app.loadURL("http://172.22.54.166:8000/static/file/H140213MKS_pm_130.dcm");
+    app.loadURL("http://172.22.54.166:8000/static/file/{{ images.file_name }}");
 });
 </script>
 </head>
@@ -143,7 +145,8 @@ $(document).ready(function(){
 	<div id="openData" title="File">
 		<form><p>
 			Path: <input type="file" id="imagefiles" multiple />
-			</p></form>
+			Path: <input type="url" id="imageurl" multiple />
+		</p></form>
 	</div>
 
 	<!-- Toolbox -->
